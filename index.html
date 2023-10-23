@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Quiz fillout</title>
+
+    <script src="https://server.fillout.com/embed/v1/"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let timer;
+            let timerDuration = 1 * 60; // 5 minutes in seconds
+            let currentTime = timerDuration;
+            let startTime;
+
+            const timerDisplay = document.querySelector("#timer");
+            const startTimerButton = document.querySelector("#startTimerButton");
+            const main = document.querySelector(".main");
+            const formContainer = document.querySelector(".form_container");
+
+            function updateTimerDisplay() {
+                const minutes = Math.floor(currentTime / 60);
+                const seconds = currentTime % 60;
+                timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
+
+            function startTimer() {
+                startTime = new Date();
+                console.log("Start Time:", startTime);
+
+                formContainer.innerHTML = `<div style="width:100%;height:1000px;" data-fillout-id="qscGSiWWNHus" data-fillout-embed-type="standard"
+                    data-fillout-inherit-parameters data-fillout-dynamic-resize data-starttime="${startTime}"></div>`;
+
+                const filloutScript = document.createElement("script");
+                filloutScript.src = "https://server.fillout.com/embed/v1/";
+                document.body.appendChild(filloutScript);
+
+                timer = setInterval(function () {
+                    currentTime--;
+                    if (currentTime <= 0) {
+                        clearInterval(timer);
+                        alert("Time's up! You have to submit your answer!");
+                    }
+
+                    updateTimerDisplay();
+                }, 1000);
+
+                startTimerButton.disabled = true;
+
+                // Initialize Fillout form
+                const filloutElement = formContainer.querySelector("[data-fillout-id]");
+                fillout.embed({ element: filloutElement });
+            }
+
+            startTimerButton.addEventListener("click", startTimer);
+
+            formContainer.style.display = "flex";
+        });
+    </script>
+</head>
+
+<body>
+    <main class="main">
+        <p>Time Left: <span id="timer">00:00</span></p>
+        <button id="startTimerButton" type="button">Start Timer</button>
+        <div class="form_container"></div>
+    </main>
+</body>
+
+</html>
