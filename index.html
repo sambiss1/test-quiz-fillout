@@ -6,12 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test Quiz fillout</title>
 
+    <style>
+        .timer-coontainer {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Style for the popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        /* Style for the overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Style for the close button */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+
     <script src="https://server.fillout.com/embed/v1/"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let timer;
-            let timerDuration = 1 * 60; // 5 minutes in seconds
+            let timerDuration = 3 * 60; // 5 minutes in seconds
             let currentTime = timerDuration;
             let startTime;
 
@@ -20,15 +60,38 @@
             const main = document.querySelector(".main");
             const formContainer = document.querySelector(".form_container");
 
+            const popup = document.querySelector(".popup");
+            const overlay = document.querySelector(".overlay");
+
             function updateTimerDisplay() {
                 const minutes = Math.floor(currentTime / 60);
                 const seconds = currentTime % 60;
                 timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
             }
 
+            function showPopup(message) {
+                // Display the overlay and popup
+                overlay.style.display = "block";
+                popup.style.display = "block";
+
+                // Set the message in the popup
+                popup.innerHTML = `<p>${message}</p>`;
+                // Add a close button inside the popup
+                const closeButton = document.createElement("div");
+                closeButton.innerHTML = "&times;"; // "×" symbol for close
+                closeButton.className = "close-button";
+                closeButton.addEventListener("click", hidePopup);
+                popup.appendChild(closeButton);
+            }
+
+            function hidePopup() {
+                // Hide the overlay and popup
+                overlay.style.display = "none";
+                popup.style.display = "none";
+            }
+
             function startTimer() {
                 startTime = new Date();
-                console.log("Start Time:", startTime);
 
                 formContainer.innerHTML = `<div style="width:100%;height:1200px;" data-fillout-id="qscGSiWWNHus" data-fillout-embed-type="standard" data-fillout-inherit-parameters data-fillout-dynamic-resize data-starttime="${startTime}"></div>`;
 
@@ -38,22 +101,29 @@
 
                 timer = setInterval(function () {
                     currentTime--;
+
+                    if (currentTime === 2 * 60) {
+                        // Show popup when 2 minutes are left
+                        showPopup("Attention ! Il reste 2 minutes.");
+                    }
+
                     if (currentTime <= 0) {
                         clearInterval(timer);
-                        alert("Le temps est écoulé vous devez soumettre vos réponses !");
+                        // Show popup when time is up
+                        showPopup("Le temps est écoulé, veuillez soumettre vos réponses !");
+                        startTimerButton.disabled = true;
                     }
 
                     updateTimerDisplay();
                 }, 1000);
 
                 startTimerButton.disabled = true;
-
-                // Initialize Fillout form
-                const filloutElement = formContainer.querySelector("[data-fillout-id]");
-                fillout.embed({ element: filloutElement });
             }
 
             startTimerButton.addEventListener("click", startTimer);
+
+            // Close the popup when clicking on the overlay
+            overlay.addEventListener("click", hidePopup);
 
             formContainer.style.display = "flex";
         });
@@ -62,9 +132,15 @@
 
 <body>
     <main class="main">
-        <p>Time Left: <span id="timer">00:00</span></p>
-        <button id="startTimerButton" type="button">Start Timer</button>
+        <div class="timer-coontainer">
+            <p>Temps Restant : <span id="timer">00:00</span></p>
+            <button id="startTimerButton" type="button">Start Timer</button>
+        </div>
         <div class="form_container"></div>
+
+        <!-- Popup structure -->
+        <div class="overlay"></div>
+        <div class="popup"></div>
     </main>
 </body>
 
