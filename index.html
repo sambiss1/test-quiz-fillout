@@ -10,6 +10,17 @@
         .timer-coontainer {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 1em;
+        }
+
+        #startTimerButton {
+            color: white;
+            background: rgb(245, 59, 87);
+            border: rgb(245, 59, 87);
+            width: 30%;
+            height: 40px;
         }
 
         /* Style for the popup */
@@ -134,7 +145,7 @@
     <main class="main">
         <div class="timer-coontainer">
             <p>Temps Restant : <span id="timer">00:00</span></p>
-            <button id="startTimerButton" type="button">Start Timer</button>
+            <button id="startTimerButton" type="button">Commencer le test</button>
         </div>
         <div class="form_container"></div>
 
