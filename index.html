@@ -4,23 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
+        rel="stylesheet">
     <title>Test Quiz fillout</title>
 
     <style>
+        body {
+            background-color: #e5eaee;
+            font-family: "Titillium Web";
+        }
+
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
         .timer-coontainer {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: 1em;
+            background: #FFF;
+            width: 30%;
+            margin: auto;
+            padding: 2em;
+            border-radius: 15px;
+            text-align: center;
+            gap: 30px;
+        }
+
+        .timer-display {
+            font-size: 24px;
+            font-weight: 600;
         }
 
         #startTimerButton {
             color: white;
-            background: rgb(245, 59, 87);
-            border: rgb(245, 59, 87);
-            width: 30%;
+            background: #f53b58;
+            border: #f53b58;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
             height: 40px;
+            border-radius: 15px;
+            padding: 1em;
+            font-size: 24px;
+        }
+
+        .timer-counter-container {
+            display: none;
+        }
+
+
+        .advert {
+            color: #f53b58;
+            font-weight: 600;
         }
 
         #startTimerButton:hover {
@@ -28,8 +75,12 @@
         }
 
         #startTimerButton:disabled {
-             background: gray;
+            background: gray;
             border: gray;
+        }
+
+        .form_container {
+            width: 100%;
         }
 
         /* Style for the popup */
@@ -39,10 +90,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px;
+            padding: 40px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
+            border-radius: 20px;
+            color: #F53B58;
+            font-weight: 600;
         }
 
         /* Style for the overlay */
@@ -58,11 +112,22 @@
         }
 
         /* Style for the close button */
+
         .close-button {
             position: absolute;
-            top: 10px;
+            top: 15px;
             right: 10px;
             cursor: pointer;
+            background: #F53B58;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFF;
+            font-size: 30px;
+            text-align: center;
         }
     </style>
 
@@ -75,10 +140,13 @@
             let currentTime = timerDuration;
             let startTime;
 
-            const timerDisplay = document.querySelector("#timer");
+            const timerDisplay = document.querySelector(".timer");
             const startTimerButton = document.querySelector("#startTimerButton");
             const main = document.querySelector(".main");
             const formContainer = document.querySelector(".form_container");
+
+            const timerContainer = document.querySelector(".timer-coontainer")
+            const timerCounterContainer = document.querySelector(".timer-counter-container");
 
             const popup = document.querySelector(".popup");
             const overlay = document.querySelector(".overlay");
@@ -112,8 +180,12 @@
 
             function startTimer() {
                 startTime = new Date();
+                timerContainer.style.display = "none";
+                timerCounterContainer.style.display = "flex"
 
                 formContainer.innerHTML = `<div style="width:100%;height:1200px;" data-fillout-id="qscGSiWWNHus" data-fillout-embed-type="standard" data-fillout-inherit-parameters data-fillout-dynamic-resize data-starttime="${startTime}"></div>`;
+
+
 
                 const filloutScript = document.createElement("script");
                 filloutScript.src = "https://server.fillout.com/embed/v1/";
@@ -121,6 +193,7 @@
 
                 timer = setInterval(function () {
                     currentTime--;
+
 
                     if (currentTime === 2 * 60) {
                         // Show popup when 2 minutes are left
@@ -130,7 +203,7 @@
                     if (currentTime <= 0) {
                         clearInterval(timer);
                         // Show popup when time is up
-                        showPopup("Le temps est écoulé, veuillez soumettre vos réponses !");
+                        showPopup("Le temps est écoulé, rendez-vous à la dernière page pour soumettre, si vous ne l'envoyer pas dans la prochaine minute, votre candidature.");
                         startTimerButton.disabled = true;
                     }
 
@@ -146,15 +219,26 @@
             overlay.addEventListener("click", hidePopup);
 
             formContainer.style.display = "flex";
+            
         });
     </script>
 </head>
 
 <body>
     <main class="main">
+        <div class="timer-counter-container">
+            <p class="timer-display">Temps Restant : <span class="timer">03:00</span></p>
+        </div>
         <div class="timer-coontainer">
-            <p>Temps Restant : <span id="timer">00:00</span></p>
+            <div class="logo-container">
+                <img src="./images/logo.svg" />
+            </div>
+            <p class="timer-display">Temps Restant : <span class="timer">03:00</span></p>
             <button id="startTimerButton" type="button">Commencer le test</button>
+
+            <p>Le test est chronometré, mettez-vous tranquillement, vous n'avez droit qu'à une seule tentative</p>
+            <p class="advert">Tu as 03 Minutes pour répondre aux questions</p>
+
         </div>
         <div class="form_container"></div>
 
