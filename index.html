@@ -62,6 +62,12 @@
 
         .timer-counter-container {
             display: none;
+            position: fixed;
+            top: 0;
+            z-index: 99;
+            background-color: #e5eaee;
+            width: 100vw;
+            justify-content: center;
         }
 
 
@@ -81,6 +87,7 @@
 
         .form_container {
             width: 100%;
+            margin-top: 25px;
         }
 
         /* Style for the popup */
@@ -131,7 +138,6 @@
         }
     </style>
 
-    <script src="https://server.fillout.com/embed/v1/"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -197,7 +203,7 @@
 
                     if (currentTime === 2 * 60) {
                         // Show popup when 2 minutes are left
-                        showPopup("Attention ! Il reste 2 minutes.");
+                        alert("Attention ! Il reste 2 minutes.");
                     }
 
                     if (currentTime <= 0) {
@@ -219,7 +225,7 @@
             overlay.addEventListener("click", hidePopup);
 
             formContainer.style.display = "flex";
-            
+
         });
     </script>
 </head>
