@@ -67,6 +67,8 @@
             z-index: 99;
             background-color: #e5eaee;
             width: 100vw;
+            align-items: center;
+            flex-direction: column;
             justify-content: center;
         }
 
@@ -90,6 +92,14 @@
             margin-top: 25px;
         }
 
+
+        .alert-time {
+            color: #F53B58;
+            display: none;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+
         /* Style for the popup */
         .popup {
             display: none;
@@ -105,6 +115,7 @@
             color: #F53B58;
             font-weight: 600;
         }
+
 
         /* Style for the overlay */
         .overlay {
@@ -153,6 +164,7 @@
 
             const timerContainer = document.querySelector(".timer-coontainer")
             const timerCounterContainer = document.querySelector(".timer-counter-container");
+            const alertTime = document.querySelector(".alert-time");
 
             const popup = document.querySelector(".popup");
             const overlay = document.querySelector(".overlay");
@@ -203,7 +215,8 @@
 
                     if (currentTime === 2 * 60) {
                         // Show popup when 2 minutes are left
-                        alert("Attention ! Il reste 2 minutes.");
+                        // alert("Attention ! Il reste 2 minutes.");
+                        alertTime.style.display = "flex";
                     }
 
                     if (currentTime <= 0) {
@@ -234,6 +247,7 @@
     <main class="main">
         <div class="timer-counter-container">
             <p class="timer-display">Temps Restant : <span class="timer">03:00</span></p>
+            <p class="alert-time">Attention ! Il reste 2 minutes.</p>
         </div>
         <div class="timer-coontainer">
             <div class="logo-container">
