@@ -10,12 +10,12 @@
         href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
-    <title>Test Quiz fillout</title>  
+    <title>Test Quiz fillout</title>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let timer;
-            let timerDuration = 10 * 60; // 5 minutes in seconds
+            let timerDuration = 3 * 60; // 5 minutes in seconds
             let currentTime = timerDuration;
             let startTime;
 
@@ -59,7 +59,7 @@
             }
 
             function startTimer() {
-                startTime = new Date();
+                
                 timerContainer.style.display = "none";
                 timerCounterContainer.style.display = "flex"
 
@@ -72,19 +72,22 @@
                 document.body.appendChild(filloutScript);
 
                 timer = setInterval(function () {
-                    currentTime--;
+
+                    setTimeout(() => {
+                        startTime = new Date();
+                        currentTime--;
+                    }, 4000)
 
 
                     if (currentTime === 2 * 60) {
                         // Show popup when 2 minutes are left
-                        // alert("Attention ! Il reste 2 minutes.");
-                        alertTime.style.display = "flex";
+                        timerCounterContainer.style.color = "#f53b58";
                     }
 
                     if (currentTime <= 0) {
                         clearInterval(timer);
                         // Show popup when time is up
-                        showPopup("Le temps est écoulé, rendez-vous à la dernière page pour soumettre, si vous ne l'envoyer pas dans la prochaine minute, votre candidature.");
+                        showPopup("Le délai imparti s'est écoulé. Nous vous invitons à vous rendre à la dernière page pour finaliser et soumettre votre candidature. Si celle-ci n'est pas envoyée dans les prochaines minutes, elle ne sera pas prise en compte.");
                         startTimerButton.disabled = true;
 
                         alertTime.style.display = "none";
