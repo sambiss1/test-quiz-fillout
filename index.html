@@ -15,7 +15,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let timer;
-            let timerDuration = 3 * 60; // 5 minutes in seconds
+            let timerDuration = 2 * 60; // 5 minutes in seconds
             let currentTime = timerDuration;
             let startTime;
 
@@ -82,6 +82,7 @@
                     if (currentTime === 2 * 60) {
                         // Show popup when 2 minutes are left
                         timerCounterContainer.style.color = "#f53b58";
+                        timerCounterContainer.style.fontWeight = "600";
                     }
 
                     if (currentTime <= 0) {
