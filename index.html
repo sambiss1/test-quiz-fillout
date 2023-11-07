@@ -73,9 +73,17 @@
         }
 
 
-        .advert {
-            color: #f53b58;
-            font-weight: 600;
+
+
+        .advert-title {
+            font-weight: 700;
+        }
+
+
+        .list {
+            text-align: left;
+            color: black;
+            font-weight: 500;
         }
 
         #startTimerButton:hover {
@@ -257,10 +265,15 @@
             </div>
             <p class="timer-display">Temps Restant : <span class="timer">03:00</span></p>
             <button id="startTimerButton" type="button">Commencer le test</button>
-
-            <p>Le test est chronometré, mettez-vous tranquillement, vous n'avez droit qu'à une seule tentative</p>
-            <p class="advert">Tu as 03 Minutes pour répondre aux questions</p>
-
+            <div class="advert">
+                <p class="advert-title">Tu es sur le point de commencer un formulaire chronométré</p>
+                <ul class="list">
+                    <li>Tu disposes de 03 minutes pour remplir ce formulaire</li>
+                    <li>Une fois commencé, tu ne peux plus quitter le formulaire, sous peine de voir tes réponses
+                        considérées comme soumises.</li>
+                    <li>Tu n'as droit qu'à une seule tentative pour effectuer ton test !</li>
+                </ul>
+            </div>
         </div>
         <div class="form_container"></div>
 
