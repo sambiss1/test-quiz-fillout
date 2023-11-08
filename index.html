@@ -15,9 +15,11 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let timer;
-            let timerDuration = 2 * 60; // 5 minutes in seconds
+            let timerDuration = 10 * 60;
             let currentTime = timerDuration;
             let startTime;
+
+            window.scrollTo(0, 0);
 
             const timerDisplay = document.querySelector(".timer");
             const startTimerButton = document.querySelector("#startTimerButton");
@@ -58,26 +60,37 @@
                 popup.style.display = "none";
             }
 
+
+
+            const filloutIframe = formContainer.querySelector("iframe");
+
             function startTimer() {
-                
+
                 timerContainer.style.display = "none";
                 timerCounterContainer.style.display = "flex"
 
                 formContainer.innerHTML = `<div style="width:100%;height:1200px;" data-fillout-id="qscGSiWWNHus" data-fillout-embed-type="standard" data-fillout-inherit-parameters data-fillout-dynamic-resize data-starttime="${startTime}"></div>`;
 
 
+                window.addEventListener("beforeunload", function (event) {
+
+                    const confirmationMessage = "Your timer is still running. If you leave this page, your progress will be lost. Are you sure you want to leave?";
+                    event.returnValue = confirmationMessage; // Standard for most browsers
+                    return confirmationMessage; // For some older browsers
+
+                });
 
                 const filloutScript = document.createElement("script");
                 filloutScript.src = "https://server.fillout.com/embed/v1/";
                 document.body.appendChild(filloutScript);
 
-                timer = setInterval(function () {
+                window.scrollTo(0, 0);
 
+                timer = setInterval(function () {
                     setTimeout(() => {
                         startTime = new Date();
                         currentTime--;
                     }, 4000)
-
 
                     if (currentTime === 2 * 60) {
                         // Show popup when 2 minutes are left
@@ -90,7 +103,6 @@
                         // Show popup when time is up
                         showPopup("Le délai imparti s'est écoulé. Nous vous invitons à vous rendre à la dernière page pour finaliser et soumettre votre candidature. Si celle-ci n'est pas envoyée dans les prochaines minutes, elle ne sera pas prise en compte.");
                         startTimerButton.disabled = true;
-
                         alertTime.style.display = "none";
                     }
 
@@ -98,6 +110,13 @@
                 }, 1000);
 
                 startTimerButton.disabled = true;
+
+                // filloutIframe.addEventListener("load", function () {
+
+
+                //     // Save the start time to local storage
+                //     localStorage.setItem("startTime", startTime);
+                // });
             }
 
             startTimerButton.addEventListener("click", startTimer);
@@ -121,8 +140,8 @@
             <div class="logo-container">
                 <img src="./images/logo.svg" />
             </div>
-            <p class="timer-display">Temps Restant : <span class="timer">10:00</span></p>
-            <button id="startTimerButton" type="button">Commencer le test</button>
+            <!-- <p class="timer-display">Temps Restant : <span class="timer">10:00</span></p> -->
+
             <div class="advert">
                 <p class="advert-title">Tu es sur le point de commencer un formulaire chronométré</p>
                 <ul class="list">
@@ -132,6 +151,8 @@
                     <li>Tu n'as droit qu'à une seule tentative pour effectuer ton test !</li>
                 </ul>
             </div>
+
+            <button id="startTimerButton" type="button">Commencer</button>
         </div>
         <div class="form_container"></div>
 
